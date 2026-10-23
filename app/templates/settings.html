@@ -1,0 +1,6 @@
+{% extends "base.html" %}{% block title %}Settings · PhishGuard AI{% endblock %}
+{% block content %}<p class="eyebrow">CONFIGURATION & PRIVACY</p><h1>Settings</h1><section class="panel">
+<h2>Threat intelligence</h2><p>Status: <strong>{{ intel.state|replace('_',' ') }}</strong>. {{ intel.message }}</p>
+<h2>Machine-learning model</h2><p>Status: <strong>{{ model_status }}</strong>. Rule-based analysis remains available without a model.</p>
+<h2>Data handling</h2><p>Original URLs, email bodies, and EML content are not persisted. Investigation records retain a SHA-256 fingerprint, findings, timestamps, case status, and analyst notes.</p>
+<p>This local starter does not implement authentication and is not suitable for exposure to an untrusted network.</p></section>{% endblock %}

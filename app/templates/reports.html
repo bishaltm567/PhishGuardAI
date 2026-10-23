@@ -1,0 +1,4 @@
+{% extends "base.html" %}{% block title %}Reports · PhishGuard AI{% endblock %}
+{% block content %}<p class="eyebrow">EXPORTS</p><h1>Investigation reports</h1><section class="panel">
+<p>Export a case from its detail page as JSON or escaped HTML. CSV contains case metadata only.</p>
+<a class="button" href="{{ url_for('main.export_cases') }}">Download cases CSV</a></section>{% endblock %}

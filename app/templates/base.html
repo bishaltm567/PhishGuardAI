@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}PhishGuard AI{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<header class="top"><a class="brand" href="{{ url_for('main.dashboard') }}">PHISHGUARD <span>AI</span></a>
+  <nav><a href="{{ url_for('main.dashboard') }}">Dashboard</a><a href="{{ url_for('main.analyze_url') }}">Analyze URL</a>
+  <a href="{{ url_for('main.analyze_email') }}">Analyze email</a><a href="{{ url_for('main.analyze_eml') }}">EML</a>
+  <a href="{{ url_for('main.cases') }}">Cases</a><a href="{{ url_for('main.analytics') }}">Analytics</a>
+  <a href="{{ url_for('main.settings') }}">Settings</a></nav>
+</header>
+<main class="page">
+  {% with messages = get_flashed_messages(with_categories=true) %}{% for category, message in messages %}
+  <div class="notice {{ category }}" role="alert">{{ message }}</div>{% endfor %}{% endwith %}
+  {% block content %}{% endblock %}
+</main>
+<footer>Evidence-led triage only. Automated indicators are not proof of malicious intent.</footer>
+</body>
+</html>

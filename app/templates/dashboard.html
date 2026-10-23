@@ -1,0 +1,20 @@
+{% extends "base.html" %}{% block title %}Dashboard · PhishGuard AI{% endblock %}
+{% block content %}
+<section class="hero"><div><p class="eyebrow">LOCAL INVESTIGATION CONSOLE</p><h1>Threats need evidence.</h1>
+<p>Analyze suspicious messages and URLs without visiting links or sharing content with external providers.</p></div>
+<div class="actions"><a class="button" href="{{ url_for('main.analyze_url') }}">Analyze a URL</a>
+<a class="button secondary" href="{{ url_for('main.analyze_email') }}">Analyze an email</a></div></section>
+<section class="metrics">
+  <article><span>Total analyses</span><strong>{{ total }}</strong></article><article><span>High-risk indicators</span><strong>{{ high }}</strong></article>
+  <article><span>Needs review / elevated</span><strong>{{ medium }}</strong></article><article><span>Lower observed risk</span><strong>{{ low }}</strong></article>
+</section>
+<section class="grid">
+<article class="panel"><div class="panel-head"><h2>Recent investigations</h2><a href="{{ url_for('main.cases') }}">View all →</a></div>
+{% if recent %}<div class="table-wrap"><table><thead><tr><th>Case</th><th>Type</th><th>Score</th><th>Status</th></tr></thead><tbody>
+{% for case in recent %}<tr><td><a href="{{ url_for('main.case_detail', case_id=case.case_id) }}">{{ case.case_id[:8] }}</a></td>
+<td>{{ case.analysis_type|upper }}</td><td>{{ case.risk_score }}</td><td>{{ case.status }}</td></tr>{% endfor %}
+</tbody></table></div>{% else %}<p class="muted">No investigations yet. Start with a URL or email analysis.</p>{% endif %}</article>
+<aside class="panel"><h2>System status</h2><p><span class="dot"></span> Local analysis available</p>
+<p>Model <strong>{{ model_status }}</strong></p><p>Threat intelligence <strong>{{ intel.state|replace('_',' ') }}</strong></p>
+<p class="muted">{{ intel.message }}</p></aside></section>
+{% endblock %}

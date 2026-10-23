@@ -1,0 +1,15 @@
+{% extends "base.html" %}{% block title %}Cases · PhishGuard AI{% endblock %}
+{% block content %}<p class="eyebrow">CASE MANAGEMENT</p><h1>Investigations</h1>
+<form method="get" class="filter"><label for="q">Case ID</label><input id="q" name="q" value="{{ search }}" maxlength="80" placeholder="Search ID">
+<label for="status">Status</label><select name="status" id="status"><option value="">All statuses</option>
+{% for status in statuses %}<option value="{{ status }}" {% if status == status_filter %}selected{% endif %}>{{ status }}</option>{% endfor %}</select>
+<label for="sort">Sort</label><select name="sort" id="sort"><option value="newest" {% if sort == "newest" %}selected{% endif %}>Newest</option><option value="risk" {% if sort == "risk" %}selected{% endif %}>Highest risk</option></select>
+<button class="button secondary">Apply</button></form>
+<section class="panel table-wrap"><table><thead><tr><th>Case</th><th>Date (UTC)</th><th>Type</th><th>Score</th><th>Category</th><th>Status</th></tr></thead><tbody>
+{% for case in cases %}<tr><td><a href="{{ url_for('main.case_detail', case_id=case.case_id) }}">{{ case.case_id[:8] }}</a></td>
+<td>{{ case.created_at.strftime("%Y-%m-%d %H:%M") }}</td><td>{{ case.analysis_type|upper }}</td><td>{{ case.risk_score }}</td><td>{{ case.risk_category }}</td><td>{{ case.status }}</td></tr>
+{% else %}<tr><td colspan="6" class="muted">No matching cases.</td></tr>{% endfor %}</tbody></table></section>
+<div class="filter">{% if pagination.has_prev %}<a href="{{ url_for('main.cases', page=pagination.prev_num, q=search, status=status_filter, sort=sort) }}">← Previous</a>{% endif %}
+<span class="muted">Page {{ pagination.page }} of {{ pagination.pages or 1 }} · {{ pagination.total }} cases</span>
+{% if pagination.has_next %}<a href="{{ url_for('main.cases', page=pagination.next_num, q=search, status=status_filter, sort=sort) }}">Next →</a>{% endif %}</div>
+{% endblock %}

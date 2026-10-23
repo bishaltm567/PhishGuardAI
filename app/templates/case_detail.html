@@ -1,0 +1,16 @@
+{% extends "base.html" %}{% block title %}Case {{ case.case_id[:8] }} · PhishGuard AI{% endblock %}
+{% block content %}<p class="eyebrow">CASE {{ case.case_id }}</p><h1>{{ case.analysis_type|upper }} investigation</h1>
+<p class="muted">{{ case.created_at.strftime("%Y-%m-%d %H:%M UTC") }} · {{ case.risk_score }}/100 · {{ case.risk_category }}</p>
+<section class="panel"><h2>Findings</h2><ul class="findings">{% for item in findings %}<li><div><strong>{{ item.indicator }}</strong><p>{{ item.evidence }}</p></div><span class="badge {{ item.severity }}">{{ item.severity }}</span></li>{% endfor %}</ul>
+<h2>Exports</h2><p><a href="{{ url_for('main.export_case', case_id=case.case_id, format='json') }}">JSON</a> · <a href="{{ url_for('main.export_case', case_id=case.case_id, format='html') }}">HTML</a></p>
+<form method="post" class="form"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><label for="status">Status</label>
+<select id="status" name="status">{% for status in statuses %}<option {% if status == case.status %}selected{% endif %}>{{ status }}</option>{% endfor %}</select>
+<label for="notes">Analyst notes (max 5,000 characters)</label><textarea id="notes" name="notes" maxlength="5000" rows="5">{{ case.notes }}</textarea><button class="button">Save case</button></form>
+<h2>Analyst feedback</h2><p class="muted">Feedback is recorded separately and never automatically used for model training.</p>
+<form method="post" action="{{ url_for('main.add_feedback', case_id=case.case_id) }}" class="form">
+<input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><label for="feedback_type">Feedback label</label>
+<select id="feedback_type" name="feedback_type">{% for item in feedback_types %}<option>{{ item }}</option>{% endfor %}</select>
+<label for="comment">Comment (max 2,000 characters)</label><textarea id="comment" name="comment" maxlength="2000" rows="3"></textarea>
+<button class="button secondary">Record feedback</button></form>
+{% if feedback %}<ul>{% for item in feedback %}<li><strong>{{ item.feedback_type }}</strong> · {{ item.created_at.strftime("%Y-%m-%d %H:%M UTC") }}{% if item.comment %}<p>{{ item.comment }}</p>{% endif %}</li>{% endfor %}</ul>{% endif %}
+</section>{% endblock %}

@@ -1,0 +1,2 @@
+{% extends "base.html" %}{% block title %}Request error · PhishGuard AI{% endblock %}
+{% block content %}<section class="panel"><h1>Request could not be completed</h1><p>{{ message }}</p><a href="{{ url_for('main.dashboard') }}">Return to dashboard</a></section>{% endblock %}

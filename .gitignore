@@ -1,0 +1,16 @@
+.env
+.qodo/
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+instance/*
+!instance/.gitkeep
+PhishGuardAI.zip
+*.sqlite
+*.db
+*.joblib
+model-metadata.json

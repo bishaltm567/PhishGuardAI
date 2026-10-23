@@ -1,0 +1,14 @@
+{% extends "base.html" %}{% block title %}Analyze {{ kind }} · PhishGuard AI{% endblock %}
+{% block content %}
+<p class="eyebrow">OFFLINE ANALYSIS</p><h1>Analyze {{ kind }}</h1>
+<p class="muted">Inputs are analyzed locally. Submitted content is not saved; the investigation record stores findings and a one-way input fingerprint.</p>
+<form method="post" action="{{ url_for(endpoint) }}" enctype="multipart/form-data" class="panel form">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  {% if kind == "URL" %}<label for="url">Complete URL</label><input id="url" name="url" type="url" maxlength="4096" required placeholder="https://example.com/path">
+  {% elif kind == "Email" %}<label for="email_text">Plain-text email</label><textarea id="email_text" name="email_text" rows="12" maxlength="100000" required></textarea>
+  <label for="authentication_results">Authentication-Results header text (optional)</label><textarea id="authentication_results" name="authentication_results" rows="3" maxlength="10000"></textarea>
+  {% else %}<label for="eml_file">EML file (maximum 1 MB)</label><input id="eml_file" name="eml_file" type="file" accept=".eml,message/rfc822" required>
+  {% endif %}
+  <button class="button" type="submit">Analyze safely</button>
+</form>
+{% endblock %}

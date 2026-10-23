@@ -1,0 +1,18 @@
+{% extends "base.html" %}{% block title %}Analysis result · PhishGuard AI{% endblock %}
+{% block content %}
+<p class="eyebrow">INVESTIGATION CREATED</p><h1>{{ case.analysis_type|upper }} analysis</h1>
+<section class="metrics"><article><span>Risk triage score</span><strong>{{ risk.score }}<small>/100</small></strong></article>
+<article><span>Category</span><strong class="category">{{ risk.category }}</strong></article>
+<article><span>Case ID</span><strong class="small-value">{{ case.case_id[:12] }}</strong></article></section>
+<p class="notice">Score is reproducible triage guidance, not calibrated probability or proof of malicious intent.</p>
+<section class="panel"><h2>Evidence findings</h2><ul class="findings">
+{% for item in findings %}<li><div><strong>{{ item.indicator }}</strong><p>{{ item.evidence }}</p></div>
+<span class="badge {{ item.severity }}">{{ item.severity }}</span></li>{% endfor %}
+</ul>
+{% if detail.authentication %}<h2>Email authentication</h2><p>{{ detail.authentication.source }}</p>
+{% for item in detail.authentication.results %}<p><strong>{{ item.mechanism }}:</strong> {{ item.status }} — {{ item.explanation }}</p>{% endfor %}{% endif %}
+{% if detail.attachment_metadata %}<h2>Attachment metadata (not opened)</h2><ul>{% for item in detail.attachment_metadata %}<li>{{ item.filename }} — {{ item.content_type }}</li>{% endfor %}</ul>{% endif %}
+<p class="muted">{{ detail.retention or "The original input was not retained." }}</p>
+{% if detail.model %}<p><strong>Optional URL model:</strong> {{ detail.model.status }}{% if detail.model.label %} — {{ detail.model.label }}{% endif %}</p>{% endif %}
+<a class="button secondary" href="{{ url_for('main.case_detail', case_id=case.case_id) }}">Open case</a></section>
+{% endblock %}

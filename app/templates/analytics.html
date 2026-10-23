@@ -1,0 +1,6 @@
+{% extends "base.html" %}{% block title %}Analytics · PhishGuard AI{% endblock %}
+{% block content %}<p class="eyebrow">DATABASE-DRIVEN</p><h1>Analytics</h1><p class="muted">Counts reflect the latest 5,000 saved local investigations only.</p>
+<div class="grid"><section class="panel"><h2>Analysis types</h2>{% for name, count in totals %}<p>{{ name|upper }} <strong>{{ count }}</strong></p>{% else %}<p>No analyses recorded.</p>{% endfor %}</section>
+<section class="panel"><h2>Risk categories</h2>{% for name, count in categories %}<p>{{ name }} <strong>{{ count }}</strong></p>{% else %}<p>No findings recorded.</p>{% endfor %}</section>
+<section class="panel"><h2>Daily analysis volume</h2>{% for day, count in trends %}<p>{{ day }} <strong>{{ count }}</strong></p>{% else %}<p>No analyses recorded.</p>{% endfor %}</section>
+<section class="panel"><h2>Most common indicators</h2>{% for name, count in top_indicators %}<p>{{ name }} <strong>{{ count }}</strong></p>{% else %}<p>No findings recorded.</p>{% endfor %}</section></div>{% endblock %}
